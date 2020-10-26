@@ -16,9 +16,13 @@ jobs:
     steps:
       - name: get release branch
         run: |
-          echo ${{ github.event }}
+          echo "-->"
+          cat ${GITHUB_EVENT_PATH}
+          echo "<--"
+
           echo "sha ${GITHUB_SHA}"
           echo "ref ${GITHUB_REF}"
+
           echo "sha branch"
           git branch -a --contains ${GITHUB_SHA}
           echo "ref branch"
