@@ -1,0 +1,38 @@
+name: testing
+
+on:
+  workflow_dispatch:
+
+#  release:
+#    types: [published]
+
+jobs:
+
+  publish:
+    name: publish release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: get release branch
+        run: |
+          echo ${{ github.event }}
+          echo "sha ${GITHUB_SHA}"
+          echo "ref ${GITHUB_REF}"
+          echo "sha branch"
+          git branch -a --contains ${GITHUB_SHA}
+          echo "ref branch"
+          git branch -a --contains ${GITHUB_REF}
+#      - name: checkout
+#        uses: actions/checkout@v1
+#
+#      - name: set up jdk
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 11
+
+#      - name: publish release to bintray
+#        env:
+#          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+#          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+#        run: ./gradlew publishRelease
