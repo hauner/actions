@@ -9,11 +9,14 @@ on:
 jobs:
 
   publish:
-    name: publish release
+    name: testing
 
     runs-on: ubuntu-latest
 
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
       - name: get release branch
         run: |
           echo "-->"
@@ -27,8 +30,6 @@ jobs:
           git branch -a --contains ${GITHUB_SHA}
           echo "ref branch"
           git branch -a --contains ${GITHUB_REF}
-#      - name: checkout
-#        uses: actions/checkout@v1
 #
 #      - name: set up jdk
 #        uses: actions/setup-java@v1
