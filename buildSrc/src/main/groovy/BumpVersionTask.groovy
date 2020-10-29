@@ -16,7 +16,8 @@ class BumpPatchVersionTask extends DefaultTask {
 
         def parts = version.split ('-')
         def numbers = parts.first ().split ('\\.')
-        numbers [2] = (numbers [2] as Integer) + 1
+        def lastIndex = numbers.size () - 1
+        numbers [lastIndex] = (numbers [lastIndex] as Integer) + 1
 
         def nextVersion = numbers.join ('.')
         if (parts.contains ('-SNAPSHOT') || snapshot) {
