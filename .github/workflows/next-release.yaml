@@ -41,7 +41,7 @@ jobs:
       - name: set release version
         if: ${{ github.event.inputs.version }}
         run: |
-          if [ -z "${{ github.event.inputs.version }}" ]
+          if [ "x" != "x${{ github.event.inputs.version }}" ]
           then
             ./gradlew nextRelease --new-version=${{ github.event.inputs.version }}
           else
