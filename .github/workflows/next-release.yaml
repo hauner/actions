@@ -39,8 +39,14 @@ jobs:
           git config user.email ${GITHUB_WORKFLOW}@openapiprocessor.io
 
       - name: set release version
+        if: ${{ github.event.inputs.version }}
         run: |
-          ./gradlew nextRelease --new-version=${{ github.event.inputs.version }}
+          if [ -z "${{ github.event.inputs.version }}" ]
+          then
+            ./gradlew nextRelease --new-version=${{ github.event.inputs.version }}
+          else
+            ./gradlew nextRelease
+          fi
 
       - name: commit release version
         run: |
