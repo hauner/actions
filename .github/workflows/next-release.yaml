@@ -1,0 +1,49 @@
+name: next release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'release version'
+        required: false
+
+jobs:
+
+  next-release:
+    name: 'bump version to next release'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: set up jdk
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: checkout branch
+        uses: actions/checkout@v2
+
+      - name: set up git
+        run: |
+          git config user.name ${GITHUB_WORKFLOW}
+          git config user.email ${GITHUB_WORKFLOW}@openapiprocessor.io
+
+      - name: set release version
+        run: |
+          ./gradlew nextRelease --new-version=${{ github.event.inputs.version }}
+
+      - name: commit release version
+        run: |
+          git add VERSION
+          git commit -m "bump to release"
+          git push
