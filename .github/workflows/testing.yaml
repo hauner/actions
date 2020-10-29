@@ -48,18 +48,18 @@ jobs:
         run: |
           git add VERSION
           git commit -m "bump to release"
-          git tag -fa ${{ github.event.release.tag_name }}
-#          git push --tags
+          git tag -f ${{ github.event.release.tag_name }}
+          git push --tags
 
-#      - name: set next snapshot version
-#        run: |
-#          ./gradlew nextSnaphsot
-#
-#      - name: commit release version
-#        run: |
-#          git add VERSION
-#          git commit -m "bump to next snapshot"
-#          git push
+      - name: set next snapshot version
+        run: |
+          ./gradlew nextSnaphsot
+
+      - name: commit release version
+        run: |
+          git add VERSION
+          git commit -m "bump to next snapshot"
+          git push
 
   build-release:
     name: 'build release'
