@@ -47,7 +47,7 @@ jobs:
       - name: commit release version
         run: |
           git add VERSION
-#          git commit -m "bump to release"
+          git commit -m "bump to release"
 #          git tag -fa ${{ github.event.release.tag_name }}
 #          git push --tags
 
