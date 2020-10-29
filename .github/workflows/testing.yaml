@@ -15,11 +15,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: set up git
-        run: |
-          git config user.name $GITHUB_WORKFLOW
-          git config user.email $GITHUB_WORKFLOW@openapiprocessor.io
-
       - name: set up jdk
         uses: actions/setup-java@v1
         with:
@@ -39,6 +34,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ github.event.release.target_commitish }}
+
+      - name: set up git
+        run: |
+          git config user.name ${GITHUB_WORKFLOW}
+          git config user.email ${GITHUB_WORKFLOW}@openapiprocessor.io
 
       - name: set release version
         run: |
