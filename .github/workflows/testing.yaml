@@ -63,7 +63,7 @@ jobs:
 
   build-release:
     name: 'build release'
-    needs: [bump-to-release]
+    needs: [bump-version]
 
     runs-on: ubuntu-latest
 
