@@ -35,8 +35,8 @@ jobs:
 
       - name: set up git
         run: |
-          git config user.name ${GITHUB_WORKFLOW}
-          git config user.email ${GITHUB_WORKFLOW}@openapiprocessor.io
+          git config user.name "workflow ${GITHUB_WORKFLOW}"
+          git config user.email "${GITHUB_WORKFLOW}@openapiprocessor.io"
 
       - name: set release version
         run: |
