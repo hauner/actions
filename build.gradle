@@ -20,7 +20,7 @@ task(nextRelease, type: ReleaseVersionTask) {
     group ('version')
 }
 
-task(nextSnapshot, type: BumpPatchVersionTask) {
+task(nextSnapshot, type: BumpVersionTask) {
     group ('version')
     snapshot = true
 }
