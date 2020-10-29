@@ -9,41 +9,84 @@ on:
 
 jobs:
 
-  publish:
-    name: testing
+  bump-version:
+    name: 'bump version to release and to next snapshot'
 
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout
+      - name: set up git
+        run: |
+          git config user.name $GITHUB_WORKFLOW
+          git config user.email $GITHUB_WORKFLOW@openapiprocessor.io
+
+      - name: set up jdk
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: checkout release branch
         uses: actions/checkout@v2
         with:
           ref: ${{ github.event.release.target_commitish }}
 
-      - name: get release branch
+      - name: set release version
         run: |
-          echo ${{ github.event.release.tag_name }}
-          echo ${{ github.event.release.target_commitish }}
+          ./gradlew nextRelease --version=${{ github.event.release.tag_name }}
 
-          echo "-->"
-          cat ${GITHUB_EVENT_PATH}
-          echo "<--"
+      - name: commit release version
+        run: |
+          git add .
+          git commit -m "bump to release"
+          git tag -fa ${{ github.event.release.tag_name }}
+          git push --tags
 
-          echo "sha ${GITHUB_SHA}"
-          echo "ref ${GITHUB_REF}"
+      - name: set next snapshot version
+        run: |
+          ./gradlew nextSnaphsot
 
-          echo "sha branch"
-          git branch -a --contains ${GITHUB_SHA}
-          echo "ref branch"
-          git branch -a --contains ${GITHUB_REF}
-#
-#      - name: set up jdk
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 11
+      - name: commit release version
+        run: |
+          git add .
+          git commit -m "bump to next snapshot"
+          git push
 
-#      - name: publish release to bintray
-#        env:
-#          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-#          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-#        run: ./gradlew publishRelease
+  build-release:
+    name: 'build release'
+    needs: [bump-to-release]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: set up jdk
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: checkout release tag
+        uses: actions/checkout@v2
+
+      - name: build release
+        run: |
+          ./gradlew build
+
