@@ -1,0 +1,41 @@
+plugins {
+    id 'groovy'
+}
+
+
+group 'com.github.hauner'
+version Version.loadVersion (project)
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy:3.0.6'
+}
+
+
+task(nextRelease, type: ReleaseVersionTask) {
+    group ('version')
+}
+
+task(nextSnapshot, type: BumpPatchVersionTask) {
+    group ('version')
+    snapshot = true
+}
+
+
+task(currentVersion) {
+    group ('version')
+
+    doLast {
+        println "current version: $version"
+    }
+}
+
+
+
+
+
+
