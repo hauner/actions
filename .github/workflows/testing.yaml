@@ -48,7 +48,11 @@ jobs:
         run: |
           git add VERSION
           git commit -m "bump to release"
-          git tag -f ${{ github.event.release.tag_name }}
+
+      - name: move release tag
+        run: |
+          git push --delete origin {{ github.event.release.tag_name }}
+          git tag ${{ github.event.release.tag_name }}
           git push --tags
 
       - name: set next snapshot version
