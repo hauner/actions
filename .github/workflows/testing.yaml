@@ -42,7 +42,7 @@ jobs:
 
       - name: set release version
         run: |
-          ./gradlew nextRelease --version=${{ github.event.release.tag_name }}
+          ./gradlew nextRelease --new-version=${{ github.event.release.tag_name }}
 
       - name: commit release version
         run: |

@@ -4,7 +4,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
 
 class ReleaseVersionTask extends DefaultTask {
-    @Option(option="version", description="new version string")
+    @Option(option="new-version", description="new version string")
     String version
 
     @Input
