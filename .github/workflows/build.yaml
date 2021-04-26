@@ -40,3 +40,14 @@ jobs:
       - name: read output
         run: |
           echo ${{ needs.prepare.outputs.BUILD_VERSION }}
+
+  read2:
+    name: read output 2
+    runs-on: ubuntu-latest
+    needs: [prepare]
+    if: contains(needs.prepare.outputs.BUILD_VERSION, 'SNAPSHOT')
+
+    steps:
+      - name: run snapshot
+        run: |
+          echo ${{ needs.prepare.outputs.BUILD_VERSION }}
