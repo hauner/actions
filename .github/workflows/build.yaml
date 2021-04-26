@@ -21,8 +21,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
 
-      - name: 'check props'
+      - name: extract version
         run: |
           version=`head -n1 gradle.properties`
           echo "BUILD_VERSION=${version#projectVersion=}" >> $GITHUB_ENV
