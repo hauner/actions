@@ -5,7 +5,7 @@ on:
     branches:
       - '**'
     paths-ignore:
-      - 'gradle.properties'
+#      - 'gradle.properties'
       - 'LICENSE'
       - 'README.adoc'
       - 'docs/**'
