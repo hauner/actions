@@ -19,7 +19,7 @@ jobs:
     name: prepare
     runs-on: ubuntu-latest
     outputs:
-      BUILD_VERSION: ${{ $BUILD_VERSION }}
+      BUILD_VERSION: ${{ env.BUILD_VERSION }}
 
     steps:
       - name: checkout
