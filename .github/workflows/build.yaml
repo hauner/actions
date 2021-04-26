@@ -16,9 +16,10 @@ on:
 jobs:
 
   prepare:
-    name: 'prepare'
-
+    name: prepare
     runs-on: ubuntu-latest
+    outputs:
+      BUILD_VERSION: ${{ $BUILD_VERSION }}
 
     steps:
       - name: checkout
@@ -29,3 +30,13 @@ jobs:
           version=`head -n1 gradle.properties`
           echo "BUILD_VERSION=${version#projectVersion=}" >> $GITHUB_ENV
           cat $GITHUB_ENV
+
+  read:
+    name: read output
+    runs-on: ubuntu-latest
+    needs: [prepare]
+
+    steps:
+      - name: read output
+        run: |
+          echo ${{ needs.prepare.outputs.BUILD_VERSION }}
