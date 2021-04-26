@@ -1,0 +1,29 @@
+name: build
+
+on:
+  push:
+    branches:
+      - '**'
+    paths-ignore:
+      - 'gradle.properties'
+      - 'LICENSE'
+      - 'README.adoc'
+      - 'docs/**'
+    tags-ignore:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+
+  prepare:
+    name: 'prepare'
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: 'check props'
+        run: |
+          version=`head -n1 gradle.properties`
+          echo "BUILD_VERSION=${version#projectVersion=}" >> $GITHUB_ENV
+          cat $GITHUB_ENV
